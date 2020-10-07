@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: myconfig-map
+data:
+ MY_APP: MYAPP
+ USERNAME: RAGHU

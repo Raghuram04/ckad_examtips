@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: mypod
+spec:
+ containers:
+  - name: myapp
+    image: nginx
+	tolerations:
+	 - key: "myapp"
+	   operator: "Equal"
+	   value: "test"
+	   effect: "NoSchedule"    ## NoSchedule / PreferNoSchedule / NoExecute

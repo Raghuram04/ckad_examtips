@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  labels: 
+    app: myapp
+    type: sampleapp
+  name: myapp-pod
+spec: 
+  
+  containers: 
+    - 
+      env: 
+        - 
+          name: MY_URL
+          value: httplocalhost8080
+        - 
+          name: USERNAME
+          value: RAGHU
+      image: nginx
+      name: nginx-containers

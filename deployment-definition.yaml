@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: myapp-deployment
+ labels:
+   app: myapp-replica
+   type: back-end
+spec:
+ template:
+  metadata:
+   name: myapp-pod
+   labels:
+    app: myapp
+    type: sampleapp
+  spec:
+   containers:
+    - name: nginx-containers
+      image: nginx
+ replicas: 3	  
+ selector:
+  matchLabels:
+   type: sampleapp
+ strategy:
+  type: Recreate      #RollingUpdate

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: mypod
+spec:
+ containers:
+  - name: mypod
+    image: nginx
+	volumeMounts:
+	  - mountPath: /log
+	    name: myvol
+ volumes:
+  - name: myvol
+    persistentVolumeClaim:
+     claimName: myappvolumeclaim
+ 	
+	

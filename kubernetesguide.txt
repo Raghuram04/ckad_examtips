@@ -1,0 +1,150 @@
+
+Kind - Valid Version
+Pod - v1
+Service - v1
+ReplicaSet - apps/v1
+Deployment - apps/v1
+
+Download minikube.exe. https://kubernetes.io/docs/tasks/tools/install-minikube/
+
+Navigate to minikube.exe in window cmd prompt
+
+
+CMD :
+
+1.To start the minikube.
+
+    minishift start
+
+2. Download image and create a pod
+
+   kubectl run ngnix --image=ngnix
+   
+3. Get pod details
+ 
+   kubectl get pods              //Status of the pod
+   kubectl get pods -o wide     // More details like IP and Node
+   kubectl get replicaset
+   kubectl get deployments
+   kubectl get service
+   kubectl get all   //display all details like replicaset,deployment,pods
+   kubectl cluster-info
+   
+4. Delete a pod   
+
+   kubectl delete pod ngnix       // delete the pod with name ngnix
+   
+5. create a pod/replicaset/deployment/service/namespace using respective yaml
+
+   kubectl create -f pod-definition.yaml
+   kubectl create -f replicaset-definition.yaml
+   kubectl create -f deployment-definition.yaml
+   kubectl create -f service-definition-nodeport.yaml
+   kubectl create -f namespace-definition.yaml
+   
+   kubectl edit replicaset new-replica-set
+   
+   
+6. scale the number of pod from kubectl
+
+   kubectl scale --replicas=4 -f replicasets-definition.yaml
+   kubectl scale --replicas=4 replicaset myapp-replica           // replicaset - type ,myapp-replica - name of the replicaset from yaml
+   kubectl replace -f replicasets-definition.yaml                   // after update the replicas to new value, use the replace cmd.
+   
+7. Delete the replicaset
+
+   kubectl delete replicaset myapp-replica
+   
+8. Update to the already deployed application :
+
+   kubectl apply -f deployment-definition.yaml    // update to old deployment
+   kubectl set image deployment/myapp-deployment nginx=nginx.1.7.3    // updating directly without yaml file
+   
+9. Status of deployment
+  
+   kubectl rollout status deployment/myapp-deployment      //status of the current deployment
+   kubectl rollout history deployment/myapp-deployment     //status of the current and previous deployment
+   
+   kubectl rollout history deployment deployment/myapp-deployment --revision=1  // check specific version
+   kubectl set image deployment nginx nginx=nginx:1.17 --record   // used to see the command execute during deployment
+   
+10. undo deployment
+
+  kubectl rollout undo deployment/myapp-deployment     //move to previous version
+  
+  
+11. Name space cmd
+  
+    kubectl get pods --namespace=dev
+	kubectl config set-context --current --namespace=dev
+	kubectl get pods --all-namespaces
+	
+12. Configmap
+
+    kubectl create configmap myapp-config --from-literal=APP_NAME=MYAPP --from-literal=USERNAME=RAGHU     //creating congig directly from cmd
+	kubectl create configmap myapp-config-file --from-file=myconfig.properties                            // creating from file
+	
+13 . Secret
+
+ kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
+ kubectl create secret generic myapp-db-secret --from-file=myconfig.properties
+ 
+14. SecurityConext
+
+   kubectl exec ubuntu-sleeper whoami
+   kubectl exec -it ubuntu-sleeper -- date -s '19 APR 2012 11:14:00'
+   
+   
+   
+16. Taint :
+
+   kubectl taint node node01 spray=mortein:NoSchedule
+   
+   kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule-   //Remove taint from master node
+   
+17. Node Affinity
+
+  kubectl label node node01 color=blue  // Create label to node
+  
+18. logs
+
+  kubectl logs -f pod_name
+  kubectl logs -f pod_name container_name  ## if pods has multiple container
+  
+19. Monitoring
+
+   minikube addons enable metrics-server   // enable metric server in minikube
+
+   kubectl top nodes    // cpu and memory of the nodes
+   kubectl top pods     // cpu and memory of the pods
+   
+20. labels, selector and annotation
+
+   kubectl get all --selector env=prod,bu=finance,tier=frontend    /// select based on multiple property
+   kubectl get all --selector env=prod                             /// select by one property
+   
+21. Ingress
+
+  kubectl get ingress --all-namespaces
+  kubectl get roles,rolebindings --namespace ingress-space
+  
+  
+Handy Cmd :
+
+   kubectl run --generator=run-pod/v1 mybox --image=image1.1 --command sleep 3600 --dry-run -o yaml > mypod.yaml
+   
+   kubectl explain pods --recursive | less
+   
+   watch kubectl get jobs
+   
+  
+   
+5. To Stop the minikube
+
+    minishift stop
+	
+	Metric Server location:
+	
+	
+https://github.com/kodekloudhub/kubernetes-metrics-server.git
+
